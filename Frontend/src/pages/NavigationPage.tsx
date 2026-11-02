@@ -19,8 +19,8 @@ import { NODE_ICONS } from '../components/nodeIcons'
 import {
   Badge,
   Button,
+  Card,
   CardHeader,
-  GlassCard,
   LegendDot,
   LegendLine,
   LocationSelect,
@@ -155,7 +155,7 @@ export default function NavigationPage({ preset, onRoute }: Props) {
       <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
         {/* Controls */}
         <div className="min-w-0 space-y-6">
-          <GlassCard>
+          <Card>
             <CardHeader icon={NavIcon} title="Plan a route" />
             <div className="space-y-4 p-5">
               <LocationSelect
@@ -168,7 +168,7 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                 <button
                   onClick={swap}
                   disabled={!source && !target}
-                  className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/5 text-slate-300 transition hover:rotate-180 hover:border-cyan-300/50 hover:text-cyan-300 disabled:opacity-30 disabled:hover:rotate-0"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-slate-700 bg-slate-800/50 text-slate-300 transition hover:rotate-180 hover:border-blue-500/50 hover:text-blue-300 disabled:opacity-30 disabled:hover:rotate-0"
                   aria-label="Swap start and destination"
                   title="Swap"
                 >
@@ -180,7 +180,6 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                 value={target}
                 onChange={changeTarget}
                 disabledId={source}
-                tone="violet"
               />
 
               <div>
@@ -190,13 +189,13 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                 <button
                   type="button"
                   aria-pressed="true"
-                  className="flex w-full items-center gap-3 rounded-xl border border-cyan-300/50 bg-cyan-400/10 p-3 text-left ring-1 ring-cyan-300/20"
+                  className="flex w-full items-center gap-3 rounded-lg border border-blue-500/30 bg-blue-500/10 p-3 text-left ring-1 ring-blue-500/20"
                 >
-                  <span className="grid h-9 w-9 place-items-center rounded-lg bg-cyan-400/20 text-cyan-300">
+                  <span className="grid h-9 w-9 place-items-center rounded-lg bg-blue-500/20 text-blue-300">
                     <Route size={17} />
                   </span>
                   <span className="flex-1">
-                    <span className="block text-sm font-semibold text-white">Dijkstra&apos;s Algorithm</span>
+                    <span className="block text-sm font-semibold text-white">Dijkstra's Algorithm</span>
                     <span className="block text-xs text-slate-400">Greedy · single-source shortest path</span>
                   </span>
                   <Badge tone="cyan">Selected</Badge>
@@ -210,7 +209,7 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                   disabled={loading || !source || !target}
                   onClick={() => void calculate(source, target)}
                 >
-                  {loading ? 'Calculating…' : 'Calculate shortest path'}
+                  {loading ? 'Calculating...' : 'Calculate shortest path'}
                 </Button>
                 <Button
                   variant="outline"
@@ -229,7 +228,7 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
-                    className="flex items-start gap-2 rounded-lg border border-amber-300/30 bg-amber-400/10 p-3 text-xs text-amber-200"
+                    className="flex items-start gap-2 rounded-lg border border-amber-300/30 bg-amber-500/10 p-3 text-xs text-amber-200"
                     role="alert"
                   >
                     <AlertTriangle size={14} className="mt-0.5 shrink-0" /> {error}
@@ -238,16 +237,15 @@ export default function NavigationPage({ preset, onRoute }: Props) {
               </AnimatePresence>
 
               <p className="flex items-start gap-2 text-xs text-slate-500">
-                <Info size={14} className="mt-0.5 shrink-0" />
-                {ENGINE.note}
+                <Info size={14} className="mt-0.5 shrink-0" /> {ENGINE.note}
               </p>
             </div>
-          </GlassCard>
+          </Card>
         </div>
 
         {/* Map + results */}
         <div className="min-w-0 space-y-6">
-          <GlassCard delay={0.05}>
+          <Card>
             <CardHeader
               icon={MousePointerClick}
               title="Campus map"
@@ -259,7 +257,7 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                       type="checkbox"
                       checked={showAlt}
                       onChange={(e) => setShowAlt(e.target.checked)}
-                      className="h-4 w-4 accent-violet-400"
+                      className="h-4 w-4 accent-blue-400"
                     />
                     Show alternative
                   </label>
@@ -275,13 +273,13 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                 onNodeClick={onNodeClick}
               />
             </div>
-            <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-white/5 px-5 py-3">
+            <div className="flex flex-wrap gap-x-5 gap-y-1 border-t border-slate-700 px-5 py-3">
               <LegendLine color="#22d3ee" label="Shortest route" />
               <LegendLine color="#a78bfa" label="Alternative route" dashed />
               <LegendDot color="#22d3ee" ring label="Start (S)" />
               <LegendDot color="#a78bfa" ring label="Destination (D)" />
             </div>
-          </GlassCard>
+          </Card>
 
           <AnimatePresence mode="wait">
             {result && (
@@ -304,42 +302,40 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                     label="Estimated time"
                     value={fmtDuration(result.primary.seconds)}
                     hint={`walking at ${WALKING_SPEED_MPS} m/s`}
-                    accent="violet"
                   />
                   <StatTile
                     icon={Route}
                     label="Locations on route"
                     value={result.primary.path.length}
                     hint={`${result.extractions} extractions · ${result.relaxations} relaxations`}
-                    accent="blue"
                   />
                 </div>
 
                 <div className="grid gap-6 xl:grid-cols-2">
-                  <GlassCard>
+                  <Card>
                     <CardHeader icon={Footprints} title="Route, step by step" />
                     <ol className="p-5">
                       {result.primary.path.map((id, i, arr) => {
                         const Icon = NODE_ICONS[NODE_BY_ID[id].icon]
                         const seg = result.primary.segments?.[i]
                         const cumulative = result.primary.segments
-                      ?.slice(0, i)
-                      .reduce((s, x) => s + x.weight, 0)
+                          ?.slice(0, i)
+                          .reduce((s, x) => s + x.weight, 0)
                         return (
                           <li key={id} className="relative flex gap-4 pb-1">
                             <div className="flex flex-col items-center">
                               <span
                                 className={`grid h-9 w-9 place-items-center rounded-full ring-1 ${
                                   i === 0
-                                    ? 'bg-cyan-400/20 text-cyan-200 ring-cyan-300/50'
+                                    ? 'bg-blue-500/20 text-blue-200 ring-blue-300/50'
                                     : i === arr.length - 1
-                                      ? 'bg-violet-400/20 text-violet-200 ring-violet-300/50'
-                                      : 'bg-white/5 text-slate-300 ring-white/15'
+                                      ? 'bg-violet-500/20 text-violet-200 ring-violet-300/50'
+                                      : 'bg-slate-800 text-slate-300 ring-slate-600'
                                 }`}
                               >
                                 <Icon size={16} />
                               </span>
-                              {seg && <span className="my-1 w-px flex-1 bg-gradient-to-b from-cyan-300/50 to-violet-300/30" />}
+                              {seg && <span className="my-1 w-px flex-1 bg-gradient-to-b from-blue-300/50 to-violet-300/30" />}
                             </div>
                             <div className="min-w-0 flex-1 pb-4">
                               <p className="flex items-center justify-between gap-2 text-sm font-semibold text-white">
@@ -350,7 +346,7 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                                 <span className="font-mono text-xs text-slate-400">{cumulative ?? 0} m</span>
                               </p>
                               {seg && (
-                                <p className="mt-1 text-xs text-cyan-300">
+                                <p className="mt-1 text-xs text-blue-300">
                                   ↓ walk {seg.weight} m to {nodeName(seg.to)}
                                 </p>
                               )}
@@ -361,7 +357,7 @@ export default function NavigationPage({ preset, onRoute }: Props) {
                         )
                       })}
                     </ol>
-                  </GlassCard>
+                  </Card>
 
                   <AlternativeCard
                     primary={result.primary as RouteOption}
@@ -391,7 +387,7 @@ function AlternativeCard({
   onToggle: (v: boolean) => void
 }) {
   return (
-    <GlassCard>
+    <Card>
       <CardHeader
         icon={Split}
         title="Alternative route"
@@ -402,15 +398,15 @@ function AlternativeCard({
           <>
             <PathChips items={alt.path.map(nodeName)} accent="violet" />
             <div className="grid grid-cols-3 gap-3 text-center">
-              <div className="rounded-xl bg-white/5 p-3">
+              <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-3">
                 <p className="font-display text-lg font-bold text-white">{alt.distance} m</p>
                 <p className="text-[11px] text-slate-400">distance</p>
               </div>
-              <div className="rounded-xl bg-white/5 p-3">
+              <div className="rounded-lg border border-slate-700 bg-slate-800/50 p-3">
                 <p className="font-display text-lg font-bold text-white">{fmtDuration(alt.seconds)}</p>
                 <p className="text-[11px] text-slate-400">time</p>
               </div>
-              <div className="rounded-xl bg-violet-400/10 p-3">
+              <div className="rounded-lg border border-violet-500/30 bg-violet-500/10 p-3">
                 <p className="font-display text-lg font-bold text-violet-200">
                   +{alt.distance - primary.distance} m
                 </p>
@@ -428,6 +424,6 @@ function AlternativeCard({
           </p>
         )}
       </div>
-    </GlassCard>
+    </Card>
   )
 }

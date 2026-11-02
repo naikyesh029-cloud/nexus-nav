@@ -16,8 +16,8 @@ import PlaybackControls, { SPEED_MS } from '../components/PlaybackControls'
 import {
   Badge,
   Button,
+  Card,
   CardHeader,
-  GlassCard,
   LegendDot,
   LegendLine,
   PageTitle,
@@ -97,9 +97,9 @@ export default function MultistagePage() {
       />
 
       {/* recurrence + controls */}
-      <GlassCard>
+      <Card>
         <div className="grid gap-5 p-5 lg:grid-cols-[1fr_1.2fr]">
-          <div className="rounded-xl border border-violet-300/20 bg-violet-400/5 p-4">
+          <div className="rounded-lg border border-violet-500/20 bg-violet-500/5 p-4">
             <p className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-violet-300">
               <Lightbulb size={14} /> Backward DP recurrence
             </p>
@@ -126,11 +126,11 @@ export default function MultistagePage() {
             onReset={pb.reset}
           />
         </div>
-      </GlassCard>
+      </Card>
 
       <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
         {/* graph */}
-        <GlassCard delay={0.05} className="min-w-0">
+        <Card className="min-w-0">
           <CardHeader
             icon={Network}
             title="Directed multistage graph"
@@ -163,20 +163,20 @@ export default function MultistagePage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="mx-4 mb-4 rounded-xl border border-white/10 bg-black/25 p-4"
+                className="mx-4 mb-4 rounded-lg border border-slate-700 bg-slate-800/50 p-4"
               >
                 <p className="text-sm text-slate-200">{step.message}</p>
                 {step.kind === 'compute' && (
                   <div className="mt-3 space-y-1 font-mono text-[13px] leading-6">
                     <p className="text-slate-400">{step.symbolic}</p>
-                    <p className="text-cyan-200">{step.numeric}</p>
+                    <p className="text-blue-200">{step.numeric}</p>
                   </div>
                 )}
               </motion.div>
             )}
           </AnimatePresence>
 
-          <div className="flex flex-wrap gap-x-5 gap-y-1.5 border-t border-white/5 px-5 py-3">
+          <div className="flex flex-wrap gap-x-5 gap-y-1.5 border-t border-slate-700 px-5 py-3">
             <LegendDot color="#5468a8" ring label="Not computed" />
             <LegendDot color="#60a5fa" ring label="cost known" />
             <LegendDot color="#fbbf24" label="Being computed" />
@@ -184,10 +184,10 @@ export default function MultistagePage() {
             <LegendLine color="#60a5fa" label="Chosen next hop d(v)" />
             <LegendLine color="#22d3ee" label="Optimal path" />
           </div>
-        </GlassCard>
+        </Card>
 
         {/* DP table */}
-        <GlassCard delay={0.1} className="min-w-0">
+        <Card className="min-w-0">
           <CardHeader icon={Table2} title="DP cost table" subtitle="Filled from stage 5 back to stage 1" />
           <div className="overflow-x-auto p-2">
             <table className="w-full text-sm">
@@ -208,7 +208,7 @@ export default function MultistagePage() {
                   return (
                     <tr
                       key={`${v}-${isCur ? step?.index : 'x'}`}
-                      className={`border-t border-white/5 ${isCur ? 'row-flash bg-amber-400/10' : onPath ? 'bg-cyan-400/10' : ''}`}
+                      className={`border-t border-slate-700 ${isCur ? 'row-flash bg-amber-400/10' : onPath ? 'bg-blue-400/10' : ''}`}
                     >
                       <td className="px-3 py-1.5 text-xs text-slate-500">
                         {stage}
@@ -216,7 +216,7 @@ export default function MultistagePage() {
                         {stage === sinkStage && ' (sink)'}
                       </td>
                       <td className="px-3 py-1.5 font-display font-semibold text-white">{v}</td>
-                      <td className={`px-3 py-1.5 text-right font-mono ${known ? 'text-cyan-200' : 'text-slate-600'}`}>
+                      <td className={`px-3 py-1.5 text-right font-mono ${known ? 'text-blue-200' : 'text-slate-600'}`}>
                         {known ? c : '—'}
                       </td>
                       <td className="px-3 py-1.5 text-right font-mono text-slate-300">
@@ -228,12 +228,12 @@ export default function MultistagePage() {
               </tbody>
             </table>
           </div>
-        </GlassCard>
+        </Card>
       </div>
 
       <div className="grid gap-6 xl:grid-cols-3">
         {/* stage-wise calculations */}
-        <GlassCard delay={0.1} className="min-w-0 xl:col-span-2">
+        <Card className="min-w-0 xl:col-span-2">
           <CardHeader
             icon={Calculator}
             title="Stage-wise calculations"
@@ -258,14 +258,14 @@ export default function MultistagePage() {
                   {list.map((s) => (
                     <div
                       key={s.index}
-                      className={`rounded-xl border p-3 font-mono text-[12.5px] leading-6 ${
+                      className={`rounded-lg border p-3 font-mono text-[12.5px] leading-6 ${
                         s.index === pb.index
                           ? 'border-amber-300/40 bg-amber-400/10'
-                          : 'border-white/10 bg-white/[0.03]'
+                          : 'border-slate-700 bg-slate-800/50'
                       }`}
                     >
                       <p className="text-slate-400">{s.symbolic}</p>
-                      <p className="text-cyan-200">{s.numeric}</p>
+                      <p className="text-blue-200">{s.numeric}</p>
                       <p className="text-violet-200">→ d({s.vertex}) = {s.chosen}</p>
                     </div>
                   ))}
@@ -273,10 +273,10 @@ export default function MultistagePage() {
               </div>
             ))}
           </div>
-        </GlassCard>
+        </Card>
 
         <div className="min-w-0 space-y-6">
-          <GlassCard delay={0.15} glow={isDone}>
+          <Card className={isDone ? 'border-violet-500/30' : ''}>
             <CardHeader icon={CheckCircle2} title="Optimal path & cost" />
             <div className="p-5">
               {isDone && solution ? (
@@ -287,7 +287,7 @@ export default function MultistagePage() {
                   </p>
                   <PathChips items={activePath.map(String)} />
                   {solution.optimalPaths.length > 1 && (
-                    <div className="space-y-2 rounded-xl bg-violet-400/10 p-3 ring-1 ring-violet-300/20">
+                    <div className="space-y-2 rounded-lg border border-violet-500/30 bg-violet-500/10 p-3">
                       <p className="text-xs text-violet-100">
                         Tie: {solution.optimalPaths.length} different paths all cost {solution.totalCost}. Show:
                       </p>
@@ -298,8 +298,8 @@ export default function MultistagePage() {
                             onClick={() => setPathChoice(i)}
                             className={`rounded-lg border px-2.5 py-1 font-mono text-xs transition ${
                               i === pathChoice
-                                ? 'border-cyan-300/60 bg-cyan-400/15 text-cyan-100'
-                                : 'border-white/10 text-slate-300 hover:border-white/30'
+                                ? 'border-blue-500/60 bg-blue-500/15 text-blue-100'
+                                : 'border-slate-700 text-slate-300 hover:border-slate-500'
                             }`}
                           >
                             {p.join('→')}
@@ -323,33 +323,32 @@ export default function MultistagePage() {
                 </div>
               )}
             </div>
-          </GlassCard>
+          </Card>
 
-          <GlassCard delay={0.2}>
+          <Card>
             <CardHeader icon={Gauge} title="Complexity" subtitle="Multistage graph DP" />
             <div className="space-y-3 p-5 text-sm">
-              <div className="rounded-xl bg-cyan-400/5 p-3 ring-1 ring-cyan-300/15">
+              <div className="rounded-lg border border-blue-500/15 bg-blue-500/5 p-3">
                 <p className="text-[11px] uppercase tracking-wider text-slate-500">Time</p>
-                <p className="font-mono text-lg text-cyan-200">O(V + E)</p>
+                <p className="font-mono text-lg text-blue-200">O(V + E)</p>
                 <p className="mt-1 text-xs text-slate-400">
                   Each vertex is computed once and each edge examined once:{' '}
                   {solution
                     ? `${solution.vertexCount} vertices + ${solution.edgesExamined} edges = ${solution.vertexCount + solution.edgesExamined} operations here.`
-                    : '…'}
+                    : '...'}
                 </p>
               </div>
-              <div className="rounded-xl bg-violet-400/5 p-3 ring-1 ring-violet-300/15">
+              <div className="rounded-lg border border-violet-500/15 bg-violet-500/5 p-3">
                 <p className="text-[11px] uppercase tracking-wider text-slate-500">Space</p>
                 <p className="font-mono text-lg text-violet-200">O(V)</p>
                 <p className="mt-1 text-xs text-slate-400">cost[] and d[] arrays, one entry per vertex.</p>
               </div>
               <p className="flex items-start gap-2 text-xs text-slate-500">
-                <Lightbulb size={14} className="mt-0.5 shrink-0 text-amber-300" />
-                Why DP? Optimal substructure (the best path from i uses a best path from j) and overlapping
+                <Lightbulb size={14} className="mt-0.5 shrink-0 text-amber-300" /> Why DP? Optimal substructure (the best path from i uses a best path from j) and overlapping
                 subproblems (e.g. cost(10) is reused by vertices 6, 7 and 8).
               </p>
             </div>
-          </GlassCard>
+          </Card>
         </div>
       </div>
     </div>

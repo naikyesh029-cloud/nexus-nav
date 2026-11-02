@@ -17,8 +17,8 @@ import PlaybackControls, { SPEED_MS } from '../components/PlaybackControls'
 import {
   Badge,
   Button,
+  Card,
   CardHeader,
-  GlassCard,
   LegendDot,
   LegendLine,
   LocationSelect,
@@ -43,7 +43,6 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
   const [target, setTarget] = useState(preset?.target || 'hostel')
   const [run, setRun] = useState<DijkstraRun | null>(null)
   const [speed, setSpeed] = useState(3)
-
   const pb = usePlayback(run?.steps.length ?? 0, SPEED_MS[speed - 1])
   const { reset } = pb
 
@@ -135,14 +134,13 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
       />
 
       {/* controls */}
-      <GlassCard>
+      <Card>
         <div className="grid gap-5 p-5 lg:grid-cols-[220px_220px_1fr]">
           <LocationSelect label="Source" value={source} onChange={(id) => setSource(id || 'gate')} />
           <LocationSelect
             label="Destination (for final path)"
             value={target}
             onChange={setTarget}
-            tone="violet"
             placeholder="None"
           />
           <PlaybackControls
@@ -158,11 +156,11 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
             onReset={pb.reset}
           />
         </div>
-      </GlassCard>
+      </Card>
 
       {/* graph + table */}
       <div className="grid gap-6 xl:grid-cols-[1fr_380px]">
-        <GlassCard delay={0.05} className="min-w-0">
+        <Card className="min-w-0">
           <CardHeader
             icon={Network}
             title="Graph state"
@@ -194,7 +192,7 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.15 }}
-                className="mx-4 mb-4 flex items-start gap-3 rounded-xl border border-white/10 bg-black/25 p-4"
+                className="mx-4 mb-4 rounded-lg border border-slate-700 bg-slate-800/50 p-4"
               >
                 <span
                   className={`mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg ${
@@ -224,7 +222,7 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
             )}
           </AnimatePresence>
 
-          <div className="flex flex-wrap gap-x-5 gap-y-1.5 border-t border-white/5 px-5 py-3">
+          <div className="flex flex-wrap gap-x-5 gap-y-1.5 border-t border-slate-700 px-5 py-3">
             <LegendDot color="#5468a8" ring label="Unvisited (∞)" />
             <LegendDot color="#60a5fa" ring label="Frontier (tentative)" />
             <LegendDot color="#fbbf24" label="Current" />
@@ -233,10 +231,10 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
             <LegendLine color="#a78bfa" label="Edge improved" />
             <LegendLine color="#38bdf8" label="Shortest-path tree" />
           </div>
-        </GlassCard>
+        </Card>
 
         {/* distance table */}
-        <GlassCard delay={0.1} className="min-w-0">
+        <Card className="min-w-0">
           <CardHeader icon={Table2} title="Distance table" subtitle={`Shortest distance from ${nodeName(source)}`} />
           <div className="overflow-x-auto p-2">
             <table className="w-full text-sm">
@@ -255,8 +253,8 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
                   return (
                     <tr
                       key={`${n.id}-${updated ? step?.index : 'x'}`}
-                      className={`border-t border-white/5 ${updated ? 'row-flash' : ''} ${
-                        st === 'Current' ? 'bg-amber-400/10' : n.id === target ? 'bg-violet-400/5' : ''
+                      className={`border-t border-slate-700 ${updated ? 'row-flash' : ''} ${
+                        st === 'Current' ? 'bg-amber-400/10' : n.id === target ? 'bg-violet-500/5' : ''
                       }`}
                     >
                       <td className="px-3 py-2 font-medium text-slate-100">
@@ -284,7 +282,7 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
                                 : st === 'Frontier'
                                   ? 'bg-blue-400/15 text-blue-200'
                                   : 'bg-white/5 text-slate-500'
-                          }`}
+                        }`}
                         >
                           {st}
                         </span>
@@ -295,12 +293,12 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
               </tbody>
             </table>
           </div>
-        </GlassCard>
+        </Card>
       </div>
 
       {/* pseudocode / log / result */}
       <div className="grid gap-6 xl:grid-cols-3">
-        <GlassCard delay={0.1} className="min-w-0">
+        <Card className="min-w-0">
           <CardHeader icon={Code2} title="Pseudocode" subtitle="Highlighted lines run in the current step" />
           <pre className="overflow-x-auto p-4 font-mono text-[12.5px] leading-6">
             {DIJKSTRA_PSEUDOCODE.map((line, i) => {
@@ -318,9 +316,9 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
               )
             })}
           </pre>
-        </GlassCard>
+        </Card>
 
-        <GlassCard delay={0.15} className="min-w-0">
+        <Card className="min-w-0">
           <CardHeader
             icon={ListOrdered}
             title="Execution steps"
@@ -334,7 +332,7 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
                   onClick={() => pb.goTo(s.index)}
                   className={`flex w-full gap-2.5 rounded-lg px-2.5 py-2 text-left text-xs transition ${
                     s.index === pb.index
-                      ? 'bg-white/10 text-white ring-1 ring-cyan-300/30'
+                      ? 'bg-slate-800 text-white ring-1 ring-blue-500/30'
                       : 'text-slate-400 hover:bg-white/5'
                   }`}
                 >
@@ -354,10 +352,10 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
               </li>
             ))}
           </ol>
-        </GlassCard>
+        </Card>
 
         <div className="min-w-0 space-y-6">
-          <GlassCard delay={0.2} glow={Boolean(finalPath)}>
+          <Card>
             <CardHeader icon={CheckCircle2} title="Final shortest path" />
             <div className="p-5">
               {isDone ? (
@@ -387,17 +385,17 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
                 </div>
               )}
             </div>
-          </GlassCard>
+          </Card>
 
-          <GlassCard delay={0.25}>
+          <Card>
             <CardHeader icon={Gauge} title="Complexity" subtitle="Dijkstra's algorithm" />
             <div className="space-y-3 p-5 text-sm">
-              <div className="rounded-xl bg-cyan-400/5 p-3 ring-1 ring-cyan-300/15">
+              <div className="rounded-lg border border-blue-500/15 bg-blue-500/5 p-3">
                 <p className="text-[11px] uppercase tracking-wider text-slate-500">Time</p>
                 <p className="font-mono text-cyan-200">O(V²) — array scan (this implementation)</p>
                 <p className="font-mono text-slate-400">O((V + E) log V) — with a binary min-heap</p>
               </div>
-              <div className="rounded-xl bg-violet-400/5 p-3 ring-1 ring-violet-300/15">
+              <div className="rounded-lg border border-violet-500/15 bg-violet-500/5 p-3">
                 <p className="text-[11px] uppercase tracking-wider text-slate-500">Space</p>
                 <p className="font-mono text-violet-200">O(V) — dist[], prev[], visited</p>
               </div>
@@ -407,7 +405,7 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
                   ['Relaxations', counts.relaxations],
                   ['Updates', counts.updates],
                 ].map(([label, v]) => (
-                  <div key={label} className="rounded-lg bg-white/5 p-2">
+                  <div key={label} className="rounded-lg bg-slate-800/50 p-2">
                     <p className="font-display text-xl font-bold text-white">{v}</p>
                     <p className="text-[10px] text-slate-400">{label}</p>
                   </div>
@@ -417,7 +415,7 @@ export default function VisualizationPage({ preset }: { preset: Preset | null })
                 Counted from this run so far. Requires non-negative edge weights.
               </p>
             </div>
-          </GlassCard>
+          </Card>
         </div>
       </div>
     </div>
